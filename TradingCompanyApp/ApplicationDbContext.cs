@@ -11,7 +11,7 @@ namespace TradingCompanyApp
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(@"Data Source=MIRNA;Initial Catalog=TradingDb;Integrated Security=True;Trust Server Certificate=True");
+            options.UseSqlServer(@"Data Source=.;Initial Catalog=TradingDb;Integrated Security=True;Trust Server Certificate=True");
         }
     }
 }

@@ -13,8 +13,8 @@ namespace TradingCompanyApp.Models
         public string Name { get; set; }
         //public string Description { get; set; }
         //public double Price { get; set; }
-        public DateTime ProductionDate { get; set; }
-        public DateTime ExpirationDate { get; set; }
+        public DateTime? ProductionDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
         [EnumDataType(typeof(MeasurementUnit))]
         public MeasurementUnit Unit { get; set; }
     }

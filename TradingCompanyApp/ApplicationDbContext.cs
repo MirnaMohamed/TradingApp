@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel.DataAnnotations.Schema;
 using TradingCompanyApp.Models;
 
 namespace TradingCompanyApp
@@ -7,10 +8,11 @@ namespace TradingCompanyApp
     internal class ApplicationDbContext : DbContext
     {
         public DbSet<Item> Items { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public User ActiveUser { get; set; }
+
+        public static ApplicationDbContext context = new ApplicationDbContext();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

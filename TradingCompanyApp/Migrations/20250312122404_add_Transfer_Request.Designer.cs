@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TradingCompanyApp;
 
@@ -11,9 +12,11 @@ using TradingCompanyApp;
 namespace TradingCompanyApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312122404_add_Transfer_Request")]
+    partial class add_Transfer_Request
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasKey("ItemCode");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.ReleaseRequest", b =>
@@ -73,7 +76,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("WarehouseName");
 
-                    b.ToTable("ReleaseRequest", (string)null);
+                    b.ToTable("ReleaseRequest");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.ReleaseRequestItem", b =>
@@ -94,7 +97,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("WarehouseId", "ItemCode");
 
-                    b.ToTable("Release_Request_Items", (string)null);
+                    b.ToTable("Release_Request_Items");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.SupplyRequest", b =>
@@ -123,7 +126,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("WarehouseName");
 
-                    b.ToTable("SupplyRequest", (string)null);
+                    b.ToTable("SupplyRequest");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.SupplyRequestItem", b =>
@@ -150,7 +153,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("WarehouseId", "ItemCode");
 
-                    b.ToTable("SupplyRequestItem", (string)null);
+                    b.ToTable("SupplyRequestItem");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.TransferRequest", b =>
@@ -190,7 +193,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("TransferRequests", (string)null);
+                    b.ToTable("TransferRequests");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.TransferredItem", b =>
@@ -211,7 +214,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("WarehouseId", "ItemCode");
 
-                    b.ToTable("Transfer_Request_Items", (string)null);
+                    b.ToTable("Transfer_Request_Items");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.User", b =>
@@ -238,7 +241,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.UseTptMappingStrategy();
                 });
@@ -268,7 +271,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Warehouses", (string)null);
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.WarehouseItem", b =>
@@ -289,7 +292,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("ItemCode");
 
-                    b.ToTable("WarehouseItem", (string)null);
+                    b.ToTable("WarehouseItem");
                 });
 
             modelBuilder.Entity("WarehouseUsers", b =>
@@ -304,7 +307,7 @@ namespace TradingCompanyApp.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("WarehouseUsers", (string)null);
+                    b.ToTable("WarehouseUsers");
                 });
 
             modelBuilder.Entity("TradingCompanyApp.Models.Customer", b =>

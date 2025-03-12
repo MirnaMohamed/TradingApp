@@ -1,15 +1,18 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TradingCompanyApp.Models
 {
+    [Table("TransferRequests")]
     internal class TransferRequest
     {
-        public int TransferRequestId { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int RequestId { get; set; }
         [Column("transfer_Request_Date")]
         public DateTime RequestDate { get; set; }
-        //[Column("transferCompletionDate")]
-        //public DateTime? CompletionDate { get; set; }
+        [Column("transferCompletionDate")]
+        public DateTime? CompletionDate { get; set; }
         //public RequestStatus Status { get; set; }
         [ForeignKey("Supplier")]
         public int SupplierId { get; set; }

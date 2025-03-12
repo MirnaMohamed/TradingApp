@@ -113,5 +113,15 @@ namespace TradingCompanyApp.Views
                 MessageBox.Show("Release Request added/updated successfully");
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            RequestsForm frm = new RequestsForm(RequestType.TRANSFER);
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("Transfer Request added/updated successfully");
+            }
+        }
     }
 }

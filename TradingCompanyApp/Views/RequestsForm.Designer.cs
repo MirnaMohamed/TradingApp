@@ -31,12 +31,8 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            label5 = new Label();
-            label4 = new Label();
             textBox1 = new TextBox();
             textBox2 = new TextBox();
-            dateTimePicker1 = new DateTimePicker();
-            dateTimePicker2 = new DateTimePicker();
             dataGridView1 = new DataGridView();
             ItemCode = new DataGridViewTextBoxColumn();
             Quantity = new DataGridViewTextBoxColumn();
@@ -44,6 +40,7 @@
             ExpirationDate = new DataGridViewTextBoxColumn();
             submitBtn = new Button();
             button2 = new Button();
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -75,24 +72,6 @@
             label3.TabIndex = 2;
             label3.Text = "Supplier ID";
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(24, 153);
-            label5.Name = "label5";
-            label5.Size = new Size(98, 20);
-            label5.TabIndex = 3;
-            label5.Text = "Request Date";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(421, 153);
-            label4.Name = "label4";
-            label4.Size = new Size(83, 20);
-            label4.TabIndex = 4;
-            label4.Text = "Supplier ID";
-            // 
             // textBox1
             // 
             textBox1.Location = new Point(156, 102);
@@ -106,20 +85,6 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(249, 27);
             textBox2.TabIndex = 6;
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Location = new Point(156, 148);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(250, 27);
-            dateTimePicker1.TabIndex = 9;
-            // 
-            // dateTimePicker2
-            // 
-            dateTimePicker2.Location = new Point(528, 148);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(250, 27);
-            dateTimePicker2.TabIndex = 10;
             // 
             // dataGridView1
             // 
@@ -185,20 +150,25 @@
             button2.Text = "Cancel";
             button2.UseVisualStyleBackColor = false;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(56, 163);
+            label4.Name = "label4";
+            label4.Size = new Size(0, 20);
+            label4.TabIndex = 14;
+            // 
             // RequestsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label4);
             Controls.Add(button2);
             Controls.Add(submitBtn);
             Controls.Add(dataGridView1);
-            Controls.Add(dateTimePicker2);
-            Controls.Add(dateTimePicker1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
-            Controls.Add(label4);
-            Controls.Add(label5);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -214,12 +184,8 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private Label label5;
-        private Label label4;
         private TextBox textBox1;
         private TextBox textBox2;
-        private DateTimePicker dateTimePicker1;
-        private DateTimePicker dateTimePicker2;
         private DataGridView dataGridView1;
         private Button submitBtn;
         private Button button2;
@@ -227,5 +193,6 @@
         private DataGridViewTextBoxColumn Quantity;
         private DataGridViewTextBoxColumn ProductionDate;
         private DataGridViewTextBoxColumn ExpirationDate;
+        private Label label4;
     }
 }

@@ -23,8 +23,8 @@ namespace TradingCompanyApp.Models
 
         public virtual ICollection<SupplyRequest> SupplyRequests { get; set; } = new HashSet<SupplyRequest>();
         public virtual ICollection<ReleaseRequest> ReleaseRequests { get; set; } = new HashSet<ReleaseRequest>();
-        //public virtual ICollection<TransferRequest> IncomingTransferRequests { get; set; } = new HashSet<TransferRequest>();
-        //public virtual ICollection<TransferRequest> OutgoingTransferRequests { get; set; } = new HashSet<TransferRequest>();
+        public virtual ICollection<TransferRequest> IncomingTransferRequests { get; set; } = new HashSet<TransferRequest>();
+        public virtual ICollection<TransferRequest> OutgoingTransferRequests { get; set; } = new HashSet<TransferRequest>();
 
         //public virtual ICollection<Supplier> Suppliers { get; set; } = new HashSet<Supplier>();
         public virtual ICollection<WarehouseItem> Items { get; set; } = new HashSet<WarehouseItem>();

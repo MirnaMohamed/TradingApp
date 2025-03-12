@@ -17,7 +17,7 @@ namespace TradingCompanyApp
         public DbSet<SupplyRequest> SupplyRequests { get; set; }
 
         public DbSet<ReleaseRequest> ReleaseRequests { get; set; }
-        //public DbSet<WarehouseItem> WarehouseItem { get; set; }
+        public DbSet<TransferRequest> TransferRequests { get; set; }
         public User ActiveUser { get; set; }
 
         public static ApplicationDbContext context = new ApplicationDbContext();
@@ -26,18 +26,22 @@ namespace TradingCompanyApp
         {
             base.OnModelCreating(modelBuilder);
             //Transfer Request relationship
-            //EntityTypeBuilder<TransferRequest> transferRequests = modelBuilder.Entity<TransferRequest>();
-            //transferRequests.HasOne(tr => tr.SourceWarehouse)
-            //    .WithMany(w => w.OutgoingTransferRequests)
-            //    .HasForeignKey(tr => tr.SourceWarehouseName)
-            //    .HasPrincipalKey(w => w.Name)
-            //    .OnDelete(DeleteBehavior.Restrict);
-            //transferRequests.HasOne(tr => tr.DestinationWarehouse).WithMany(w => w.IncomingTransferRequests)
-            //    .HasForeignKey(tr => tr.DestinationWarehouseName)
-            //    .HasPrincipalKey(w => w.Name)
-            //    .OnDelete(DeleteBehavior.Restrict);
-            //transferRequests.Property(t => t.RequestDate)
-            //.HasDefaultValueSql("GETDATE()");
+            EntityTypeBuilder<TransferRequest> transferRequests = modelBuilder.Entity<TransferRequest>();
+            transferRequests.HasOne(tr => tr.SourceWarehouse)
+                .WithMany(w => w.OutgoingTransferRequests)
+                .HasForeignKey(tr => tr.SourceWarehouseName)
+                .HasPrincipalKey(w => w.Name)
+                .OnDelete(DeleteBehavior.Restrict);
+            transferRequests.HasOne(tr => tr.DestinationWarehouse).WithMany(w => w.IncomingTransferRequests)
+                .HasForeignKey(tr => tr.DestinationWarehouseName)
+                .HasPrincipalKey(w => w.Name)
+                .OnDelete(DeleteBehavior.Restrict);
+            transferRequests.Property(t => t.RequestDate)
+            .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TransferredItem>().HasOne(si => si.Item)
+                .WithMany()
+                .HasForeignKey(si => new { si.WarehouseId, si.ItemCode })
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Supply request relationship
             EntityTypeBuilder<SupplyRequest> supplyRequests = modelBuilder.Entity<SupplyRequest>();
@@ -78,8 +82,8 @@ namespace TradingCompanyApp
                 .HasKey(wi => new { wi.RequestId, wi.ItemCode });
             modelBuilder.Entity<ReleaseRequestItem>()
                 .HasKey(wi => new { wi.RequestId, wi.ItemCode });
-            //modelBuilder.Entity<TransferredItem>()
-            //    .HasKey(wi => new { wi.RequestId, wi.ItemCode });
+            modelBuilder.Entity<TransferredItem>()
+                .HasKey(wi => new { wi.RequestId, wi.ItemCode });
             modelBuilder.Entity<User>()
                 .HasMany(u => u.AccessibleWarehouses)
                 .WithMany(w => w.AuthorizedUsers)

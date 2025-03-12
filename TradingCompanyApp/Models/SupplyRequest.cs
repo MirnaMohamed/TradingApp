@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TradingCompanyApp.Models
 {
+    [Table("SupplyRequest")]
     internal class SupplyRequest
+        //: ItemRequest
     {
         public int SupplyRequestId { get; set; }
         public DateTime RequestDate { get; set; }

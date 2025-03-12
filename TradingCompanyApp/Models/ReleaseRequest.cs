@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TradingCompanyApp.Models
 {
-    internal class ReleaseRequest
+    [Table("ReleaseRequest")]
+    internal class ReleaseRequest 
+        //: ItemRequest
     {
         public int ReleaseRequestId { get; set; }
         public DateTime RequestDate { get; set; }

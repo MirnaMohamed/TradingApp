@@ -9,7 +9,15 @@ namespace TradingCompanyApp
     {
         public DbSet<Item> Items { get; set; }
         public DbSet<User> Users { get; set; }
+        //public DbSet<ItemRequest> ItemsRequests { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
+
+        public DbSet<WarehouseItem> WarehouseItem { get; set; }
+
+        public DbSet<SupplyRequest> SupplyRequests { get; set; }
+
+        public DbSet<ReleaseRequest> ReleaseRequests { get; set; }
+        //public DbSet<WarehouseItem> WarehouseItem { get; set; }
         public User ActiveUser { get; set; }
 
         public static ApplicationDbContext context = new ApplicationDbContext();
@@ -88,9 +96,15 @@ namespace TradingCompanyApp
                     .OnDelete(DeleteBehavior.Restrict) 
                 );
 
+
+            //making each child entity a separate table
             modelBuilder.Entity<Supplier>().ToTable("Suppliers");
             modelBuilder.Entity<Customer>().ToTable("Customers");
             modelBuilder.Entity<Employee>().ToTable("Employees");
+
+            //modelBuilder.Entity<SupplyRequest>().ToTable("SupplyRequests");
+            //modelBuilder.Entity<ReleaseRequest>().ToTable("ReleaseRequests");
+            //modelBuilder.Entity<TransferRequest>().ToTable("TransferRequests");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

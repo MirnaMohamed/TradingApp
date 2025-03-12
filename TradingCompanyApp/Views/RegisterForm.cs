@@ -27,12 +27,16 @@ namespace TradingCompanyApp.Views
             _context = ApplicationDbContext.context;
             textBox4 = new TextBox();
             textBox4.Size = textBox3.Size;
+            textBox4.PlaceholderText = "Enter your Full Name";
+            textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 100);
+            textBox4.TextAlign = textBox3.TextAlign;
+            textBox4.Anchor = textBox3.Anchor;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            if(comboBox1.SelectedIndex != -1)
+            if(comboBox1.SelectedItem != null)
             {
                 this.Controls.Add(textBox4);
                 if (comboBox1.SelectedItem.ToString() == "Employee")
@@ -56,10 +60,6 @@ namespace TradingCompanyApp.Views
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox4.PlaceholderText = "Enter your Full Name";
-            textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 100);
-            textBox4.TextAlign = textBox3.TextAlign;
-            textBox4.Anchor = textBox3.Anchor;
             if (comboBox1.SelectedItem == "Employee")
             {
                 role = new ComboBox();
@@ -110,7 +110,6 @@ namespace TradingCompanyApp.Views
                                 FullName = textBox4.Text,
                                 Role = Enum.Parse<Role>(role.SelectedItem.ToString())
                             };
-                            _context.Users.Add(newUser);
                             break;
                         case "Supplier":
                             newUser = new Supplier
@@ -124,7 +123,6 @@ namespace TradingCompanyApp.Views
                                 FaxNumber = textBox7.Text,
                                 Website = textBox8.Text
                             };
-                            _context.Users.Add(newUser);
                             break;
                         case "Customer":
                             newUser = new Customer
@@ -138,10 +136,35 @@ namespace TradingCompanyApp.Views
                                 FaxNumber = textBox7.Text,
                                 Website = textBox8.Text
                             };
-                            _context.Users.Add(newUser);
+                            break;
+                        default:
+                            newUser = new User
+                            {
+                                Username = textBox1.Text,
+                                Email = textBox2.Text,
+                                Password = textBox3.Text
+                            };
                             break;
                     }
+                    _context.Users.Add(newUser);
+                    _context.ActiveUser = newUser;
                     _context.SaveChangesAsync();
+                    HomeForm form = new HomeForm();
+                    form.Location = this.Location;
+                    form.Opacity = 0;
+                    form.Show();
+                    this.Hide();
+                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                    timer.Interval = 30;
+                    timer.Tick += (s, e) =>
+                    {
+                        if (form.Opacity >= 1)
+                            timer.Stop();
+                        else
+                            form.Opacity += 0.05;
+                    };
+                    timer.Start();
+                    form.FormClosed += (_, _) => this.Close();
                 }
                 catch(ArgumentException ae)
                 {

@@ -19,9 +19,5 @@ namespace TradingCompanyApp.Models
         public DateTime ProductionDate { get; set; }
         public DateTime ExpirationDate { get; set; }
 
-        public SupplyRequestItem()
-        {
-            WarehouseId = SupplyRequest.Warehouse.WarehouseId; 
-        }
     }
 }

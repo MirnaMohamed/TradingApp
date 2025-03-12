@@ -13,9 +13,5 @@ namespace TradingCompanyApp.Models
         public virtual WarehouseItem Item { get; set; }
         public double Quantity { get; set; }
 
-        public ReleaseRequestItem()
-        {
-            WarehouseId = ReleaseRequest.Warehouse.WarehouseId;
-        }
     }
 }

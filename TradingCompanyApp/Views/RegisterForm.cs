@@ -90,7 +90,7 @@ namespace TradingCompanyApp.Views
             Invalidate();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             if(comboBox1.SelectedIndex != -1)
             {
@@ -148,7 +148,7 @@ namespace TradingCompanyApp.Views
                     }
                     _context.Users.Add(newUser);
                     _context.ActiveUser = newUser;
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     HomeForm form = new HomeForm();
                     LoginForm.SwitchForm(form, this);
                 }

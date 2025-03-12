@@ -57,7 +57,6 @@ namespace TradingCompanyApp.Views
                             SupplierId = int.Parse(textBox2.Text)
                         };
                         AddRequestItems(ref supplyRequest, ref _warehouse);
-                        //_warehouse.SupplyRequests.Add(supplyRequest);
                         break;
                     case RequestType.RELEASE:
                         ReleaseRequest releaseRequest = new ReleaseRequest
@@ -67,13 +66,12 @@ namespace TradingCompanyApp.Views
                             SupplierId = int.Parse(textBox2.Text)
                         };
                         AddRequestItems(ref releaseRequest, ref _warehouse);
-                        //_warehouse.ReleaseRequests.Add(releaseRequest);
                         break;
                     case RequestType.TRANSFER:
                         TransferRequest transferRequest = new TransferRequest
                         {
                             SourceWarehouseName = textBox1.Text,
-                            DestinationWarehouseName = textBox2.Text,
+                            DestinationWarehouseName = extraTextBox.Text,
                             SupplierId = int.Parse(textBox2.Text)
                         };
                         AddRequestItems(ref transferRequest);
@@ -219,11 +217,13 @@ namespace TradingCompanyApp.Views
                     }
                     else
                     {
-                        srcItem.Quantity += item.Quantity;
+                        destItem.Quantity += item.Quantity;
                     }
+                    context.WarehouseItem.Update(srcItem);
+                    context.WarehouseItem.Update(destItem);
                 }
             }
-
+            context.TransferRequests.Add(request);
             context.Warehouses.Update(src);
             context.Warehouses.Update(dest);
             context.SaveChanges();

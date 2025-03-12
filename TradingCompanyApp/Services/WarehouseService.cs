@@ -1,10 +1,23 @@
-﻿using TradingCompanyApp.Models.Reports;
+﻿using Microsoft.EntityFrameworkCore;
+using TradingCompanyApp.Models;
+using TradingCompanyApp.Models.Reports;
 
 namespace TradingCompanyApp.Services
 {
     internal static class WarehouseService
     {
         static ApplicationDbContext context = ApplicationDbContext.context;
+        internal static void AddWarehouse(Warehouse warehouse)
+        {
+            warehouse.AuthorizedUsers.Add(context.ActiveUser);
+            Employee manager = (Employee) context.Users.Find(warehouse.ManagerId);
+            manager.AccessibleWarehouses.Add(warehouse);
+            context.Warehouses.Add(warehouse);
+            context.ActiveUser.AccessibleWarehouses.Add(warehouse);
+            context.Users.Update(context.ActiveUser);
+            context.Users.Update(manager);
+            context.SaveChanges();
+        }
         internal static void UpdateWarehouseById(int id, Dictionary<string, object> options)
         {
             var warehouse = context.Warehouses.Find(id);
@@ -79,5 +92,12 @@ namespace TradingCompanyApp.Services
                 CurrentStock = finalStock
             };
         }
+        internal static List<Warehouse> GetWarehousesByCurrentManagerId()
+        {
+            context.Warehouses.Load();
+            Employee emp = (Employee) context.ActiveUser;
+            return context.Warehouses.Where(w => w.ManagerId == emp.UserId).ToList();
+        }
+        
     }
 }

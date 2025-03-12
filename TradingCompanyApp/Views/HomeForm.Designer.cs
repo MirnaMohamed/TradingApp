@@ -43,7 +43,7 @@
             button2 = new Button();
             button3 = new Button();
             button4 = new Button();
-            listBox1 = new ListBox();
+            listView1 = new ListView();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -94,19 +94,19 @@
             // menuItem2SubItem1
             // 
             menuItem2SubItem1.Name = "menuItem2SubItem1";
-            menuItem2SubItem1.Size = new Size(224, 26);
+            menuItem2SubItem1.Size = new Size(99, 26);
             menuItem2SubItem1.Text = "x";
             // 
             // menuItem2SubItem2
             // 
             menuItem2SubItem2.Name = "menuItem2SubItem2";
-            menuItem2SubItem2.Size = new Size(224, 26);
+            menuItem2SubItem2.Size = new Size(99, 26);
             menuItem2SubItem2.Text = "y";
             // 
             // menuItem2SubItem3
             // 
             menuItem2SubItem3.Name = "menuItem2SubItem3";
-            menuItem2SubItem3.Size = new Size(224, 26);
+            menuItem2SubItem3.Size = new Size(99, 26);
             menuItem2SubItem3.Text = "z";
             // 
             // welcomeLabel
@@ -162,21 +162,23 @@
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
-            // listBox1
+            // listView1
             // 
-            listBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(445, 98);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(309, 264);
-            listBox1.TabIndex = 6;
+            listView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            listView1.FullRowSelect = true;
+            listView1.Location = new Point(367, 113);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(408, 254);
+            listView1.TabIndex = 7;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.List;
             // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(listBox1);
+            Controls.Add(listView1);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -209,6 +211,6 @@
         private Button button2;
         private Button button3;
         private Button button4;
-        private ListBox listBox1;
+        private ListView listView1;
     }
 }

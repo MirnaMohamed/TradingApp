@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TradingCompanyApp.Models;
 using TradingCompanyApp.Models.Enums;
+using TradingCompanyApp.Services;
 
 namespace TradingCompanyApp.Views
 {
@@ -18,7 +19,9 @@ namespace TradingCompanyApp.Views
         ComboBox measuringUnit;
         string objType;
         ApplicationDbContext context;
-        bool isChanged = false;
+        bool isChanged = false; 
+        TextBox textBox4; 
+        ComboBox comboBox;
         public ModelCreationForm(string _type)
         {
             InitializeComponent();
@@ -26,6 +29,11 @@ namespace TradingCompanyApp.Views
             button1.Text = $"Create {_type}";
             objType = _type;
 
+            textBox4 = new TextBox();
+            textBox4.PlaceholderText = "Enter Full Name";
+            textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 50);
+            textBox4.Size = textBox3.Size;
+            textBox4.Anchor = textBox3.Anchor;
             context = ApplicationDbContext.context;
         }
 
@@ -55,10 +63,7 @@ namespace TradingCompanyApp.Views
                         textBox1.PlaceholderText = "Enter Username";
                         textBox2.PlaceholderText = "Enter Email";
                         textBox3.PlaceholderText = "Enter Password";
-                        TextBox textBox4 = new TextBox();
-                        textBox4.PlaceholderText = "Enter Full Name";
-                        textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 25);
-                        ComboBox comboBox = new ComboBox();
+                        comboBox = new ComboBox();
                         comboBox.Location = new Point(textBox4.Location.X + 50, textBox4.Location.Y + 25);
                         comboBox.Items.AddRange(["MANAGER", "ADMIN"]);
                         comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -71,31 +76,47 @@ namespace TradingCompanyApp.Views
 
         private void button1_Click(object sender, EventArgs e)
         {
-            switch (objType)
+            try
             {
-                case "Warehouse":
-                    Warehouse warehouse = new Warehouse
-                    {
-                        Name = textBox1.Text,
-                        Address = textBox2.Text,
-                        ManagerId = int.Parse(textBox3.Text)
-                    };
-                    context.Warehouses.Add(warehouse);
-                    break;
-                case "Product":
-                    Item item = new Item
-                    {
-                        ItemCode = textBox1.Text,
-                        Name = textBox2.Text,
-                        Unit = Enum.Parse<MeasurementUnit>(measuringUnit.SelectedItem.ToString())
-                    };
-                    context.Items.Add(item);
-                    break;
-                case "User":
+                switch (objType)
+                {
+                    case "Warehouse":
+                        Warehouse warehouse = new Warehouse
+                        {
+                            Name = textBox1.Text,
+                            Address = textBox2.Text,
+                            ManagerId = int.Parse(textBox3.Text)
+                        };
+                        WarehouseService.AddWarehouse(warehouse);
+                        break;
+                    case "Product":
+                        Item item = new Item
+                        {
+                            ItemCode = textBox1.Text,
+                            Name = textBox2.Text,
+                            Unit = Enum.Parse<MeasurementUnit>(measuringUnit.SelectedItem.ToString())
+                        };
+                        context.Items.Add(item);
+                        break;
+                    case "User":
+                        Employee emp = new Employee
+                        {
+                            Username = textBox1.Text,
+                            Email = textBox2.Text,
+                            Password = textBox3.Text,
+                            FullName = textBox4.Text,
+                            Role = comboBox.SelectedItem is not null ?
+                                Enum.Parse<Role>(comboBox.SelectedItem.ToString()) : Role.MANAGER
+                        };
+                        EmployeeService.AddEmployee(emp);
 
-                    break;
+                        break;
+                }
             }
-            context.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

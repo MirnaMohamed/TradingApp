@@ -29,5 +29,17 @@ namespace TradingCompanyApp.Models
         //public virtual ICollection<Supplier> Suppliers { get; set; } = new HashSet<Supplier>();
         public virtual ICollection<WarehouseItem> Items { get; set; } = new HashSet<WarehouseItem>();
         public virtual ICollection<User> AuthorizedUsers { get; set; } = new HashSet<User>();
+
+        public override string ToString()
+        {
+            string output = $"ID: {WarehouseId} - Name: {Name} - Address: {Address} ";
+            for(int i = 0; i< Items.Count; i++)
+            {
+                WarehouseItem item = Items.ElementAt(i) ;
+                output += $"Item Code: {item.ItemCode} - Quantity: {item.Quantity}";
+            }
+
+            return output;
+        }
     }
 }

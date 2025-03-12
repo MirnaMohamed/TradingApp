@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TradingCompanyApp.Models;
 using TradingCompanyApp.Models.Enums;
+using TradingCompanyApp.Models.Reports;
 using TradingCompanyApp.Services;
 
 namespace TradingCompanyApp.Views
@@ -24,8 +25,11 @@ namespace TradingCompanyApp.Views
         {
             InitializeComponent();
             _context = ApplicationDbContext.context;
+            _context.Warehouses.Load();
+            _context.Users.Load();
             currentUser = _context.ActiveUser;
             welcomeLabel.Text += currentUser.Username + ", what do you like to do ?";
+            
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -47,12 +51,13 @@ namespace TradingCompanyApp.Views
                             users.DropDownItems.Add("Create");
                             users.DropDownItems.Add("Edit");
                             users.DropDownItems.Add("View");
+                            users.DropDownItems[2].Tag = "User";
                             menuStrip1.Items.Add(users);
                             users.DropDownItemClicked += Users_DropDownItemClicked;
                         }
                         else
                         {
-                            menuItem1SubItem1.Text = "Make a Report on the warehouse";
+                            menuItem1SubItem1.Text = "Make a Report";
                             menuItem1SubItem3.Visible = false;
                         }
                         menuItem1SubItem2.Text = "View";
@@ -94,6 +99,8 @@ namespace TradingCompanyApp.Views
         private void toolStripMenuItem1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            _context.Warehouses.Load();
+            _context.Users.Load();
             switch (e.ClickedItem.Text)
             {
                 case "Create":
@@ -101,6 +108,23 @@ namespace TradingCompanyApp.Views
                     break;
                 case "View":
                     ViewList(e.ClickedItem.Tag.ToString());
+                    break;
+                case "Make a Report":
+                    if (currentUser.AccessibleWarehouses.Count == 0)
+                    {
+                        MessageBox.Show("You don't manage any warehouse.");
+                    }
+                    else if(currentUser.AccessibleWarehouses.Count == 1)
+                    {
+                        WarehouseReport report = WarehouseService
+                            .GetWarehouseReport(currentUser.AccessibleWarehouses.First().WarehouseId, null, null);
+                        ReportForm form = new ReportForm(report);
+                        form.ShowDialog();
+                    }
+                    else
+                    {
+                        WarehouseDetailsForm frm = new WarehouseDetailsForm(false, null);
+                    }
                     break;
             }
         }
@@ -120,7 +144,7 @@ namespace TradingCompanyApp.Views
             if(menuItem == "Warehouse")
             {
                 _context.WarehouseItem.Load();
-                listBox1.Items.Clear();
+                listView1.Items.Clear();
                 if(currentUser is Employee emp && emp.Role == Role.ADMIN)
                 {
                     Form dialog = new Form()
@@ -133,7 +157,6 @@ namespace TradingCompanyApp.Views
                     };
 
                     Label textLabel = new Label() { Left = 20, Top = 20, Text = "Enter Warehouse ID:" };
-                    //TextBox inputBox = new TextBox() { Left = 20, Top = 50, Width = 240 };
                     ComboBox warehouseList = new ComboBox();
                     warehouseList.Location = new Point(textLabel.Location.X +50, textLabel.Location.Y + 50);
                     warehouseList.DataSource = _context.Warehouses.ToList();
@@ -163,9 +186,16 @@ namespace TradingCompanyApp.Views
                     }
                     else
                     {
-                        listBox1.Items.Add(warehouse);
+                        listView1.Items.Add(new ListViewItem(warehouse.ToString()));
                     }
                 }
+            }
+            else
+            {
+                listView1.Items.Clear();
+                List<Employee> employees = EmployeeService.ViewEmployees();
+                foreach (Employee employee in employees)
+                    listView1.Items.Add(new ListViewItem(employee.ToString()));
             }
         }
 
@@ -185,7 +215,7 @@ namespace TradingCompanyApp.Views
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Release Request added/updated successfully");
+                MessageBox.Show("Release Request added successfully");
             }
         }
 
@@ -195,7 +225,7 @@ namespace TradingCompanyApp.Views
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Transfer Request added/updated successfully");
+                MessageBox.Show("Transfer Request added successfully");
             }
         }
 

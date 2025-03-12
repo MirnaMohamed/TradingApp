@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using TradingCompanyApp.Models;
 using TradingCompanyApp.Models.Reports;
@@ -8,7 +9,7 @@ namespace TradingCompanyApp.Views
 {
     public partial class WarehouseDetailsForm : Form
     {
-        internal WarehouseDetailsForm(bool isUpdateMode, int? id, WarehouseReport? report = null)
+        internal WarehouseDetailsForm(bool isUpdateMode, int? id)
         {
             InitializeComponent();
             Button submit = new Button();
@@ -23,38 +24,16 @@ namespace TradingCompanyApp.Views
             }
             else // Preview Mode
             {
-                ListBox listBox1 = new ListBox();
-                this.Controls.Remove(textBox1);
-                this.Controls.Remove(textBox2);
-                this.Controls.Remove(textBox3);
-                this.Controls.Remove(textBox4);
-                this.Controls.Remove(label1);
-                this.Controls.Remove(label2);
-                this.Controls.Remove(label3);
-                this.Controls.Remove(label4);
-                listBox1.Items.Add($"Warehouse: {report.WarehouseName}");
-                listBox1.Items.Add($"Period: {report.StartDate?.ToShortDateString()} - {report.EndDate?.ToShortDateString()}");
-               // listBox1.Items.Add($"---------------------------------------------------");
-
-                listBox1.Items.Add("Initial Stock:");
-                foreach (var item in report.InitialStock)
-                    listBox1.Items.Add($"Item: {item.ItemCode} - Quantity: {item.Quantity}");
-
-                listBox1.Items.Add("Supplied Items:");
-                foreach (var item in report.SupplyRequests)
-                    listBox1.Items.Add($"Supply Request ID: {item.SupplyRequestId} - Quantity: {item.Items.Count}");
-
-                listBox1.Items.Add("Released Items:");
-                foreach (var item in report.ReleaseRequests)
-                    listBox1.Items.Add($"Item: {item.ReleaseRequestId} - Quantity: {item.Items.Count}");
-
-                listBox1.Items.Add("Transferred Items:");
-                foreach (var item in report.TransferRequests)
-                    listBox1.Items.Add($"Item: {item.RequestId} - Quantity: {item.Items.Count}");
-
-                listBox1.Items.Add("Final Stock:");
-                foreach (var item in report.CurrentStock)
-                    listBox1.Items.Add($"Item: {item.ItemCode} - Quantity: {item.Quantity}");
+                List<Warehouse> warehouses = new List<Warehouse>();
+                ListViewForm frm = new ListViewForm(ref id );
+                if(frm.ShowDialog() == DialogResult.OK)
+                {
+                    if (id != null)
+                    {
+                        
+                    }
+                }
+               
             }
             textBox1.Text = id.ToString(); 
             textBox2.Text = warehouse?.Name;

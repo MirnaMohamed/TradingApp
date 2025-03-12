@@ -17,5 +17,9 @@ namespace TradingCompanyApp.Models
         [EnumDataType(typeof(Role))]
         public Role Role { get; set; }
 
+        public override string ToString()
+        {
+            return $"User ID: {UserId} - UserName: {Username} - Full Name: {FullName} - Role: {Role}";
+        }
     }
 }

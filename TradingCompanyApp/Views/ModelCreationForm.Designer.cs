@@ -38,11 +38,12 @@
             // 
             // groupBox1
             // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox1.Controls.Add(button1);
             groupBox1.Controls.Add(textBox3);
             groupBox1.Controls.Add(textBox2);
             groupBox1.Controls.Add(textBox1);
-            groupBox1.Location = new Point(132, 46);
+            groupBox1.Location = new Point(155, 52);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(442, 327);
             groupBox1.TabIndex = 0;
@@ -51,6 +52,7 @@
             // 
             // button1
             // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             button1.DialogResult = DialogResult.OK;
             button1.Location = new Point(321, 278);
             button1.Name = "button1";
@@ -62,20 +64,25 @@
             // 
             // textBox3
             // 
+            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox3.Location = new Point(107, 160);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(217, 27);
             textBox3.TabIndex = 2;
+            textBox3.TextAlign = HorizontalAlignment.Center;
             // 
             // textBox2
             // 
+            textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox2.Location = new Point(107, 105);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(217, 27);
             textBox2.TabIndex = 1;
+            textBox2.TextAlign = HorizontalAlignment.Center;
             // 
             // textBox1
             // 
+            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox1.Location = new Point(107, 50);
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "Name";

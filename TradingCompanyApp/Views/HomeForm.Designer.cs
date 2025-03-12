@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
             menuStrip1 = new MenuStrip();
             warehouseToolStripItem = new ToolStripMenuItem();
             menuItem1SubItem1 = new ToolStripMenuItem();
@@ -67,19 +68,19 @@
             // menuItem1SubItem1
             // 
             menuItem1SubItem1.Name = "menuItem1SubItem1";
-            menuItem1SubItem1.Size = new Size(224, 26);
+            menuItem1SubItem1.Size = new Size(99, 26);
             menuItem1SubItem1.Text = "x";
             // 
             // menuItem1SubItem2
             // 
             menuItem1SubItem2.Name = "menuItem1SubItem2";
-            menuItem1SubItem2.Size = new Size(224, 26);
+            menuItem1SubItem2.Size = new Size(99, 26);
             menuItem1SubItem2.Text = "y";
             // 
             // menuItem1SubItem3
             // 
             menuItem1SubItem3.Name = "menuItem1SubItem3";
-            menuItem1SubItem3.Size = new Size(224, 26);
+            menuItem1SubItem3.Size = new Size(99, 26);
             menuItem1SubItem3.Text = "z";
             // 
             // toolStripMenuItem2
@@ -93,19 +94,19 @@
             // menuItem2SubItem1
             // 
             menuItem2SubItem1.Name = "menuItem2SubItem1";
-            menuItem2SubItem1.Size = new Size(99, 26);
+            menuItem2SubItem1.Size = new Size(224, 26);
             menuItem2SubItem1.Text = "x";
             // 
             // menuItem2SubItem2
             // 
             menuItem2SubItem2.Name = "menuItem2SubItem2";
-            menuItem2SubItem2.Size = new Size(99, 26);
+            menuItem2SubItem2.Size = new Size(224, 26);
             menuItem2SubItem2.Text = "y";
             // 
             // menuItem2SubItem3
             // 
             menuItem2SubItem3.Name = "menuItem2SubItem3";
-            menuItem2SubItem3.Size = new Size(99, 26);
+            menuItem2SubItem3.Size = new Size(224, 26);
             menuItem2SubItem3.Text = "z";
             // 
             // welcomeLabel
@@ -182,6 +183,7 @@
             Controls.Add(button1);
             Controls.Add(welcomeLabel);
             Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "HomeForm";
             Text = "HomeForm";

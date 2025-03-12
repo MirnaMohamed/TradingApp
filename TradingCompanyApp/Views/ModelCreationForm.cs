@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,9 +15,10 @@ namespace TradingCompanyApp.Views
 {
     public partial class ModelCreationForm : Form
     {
+        ComboBox measuringUnit;
         string objType;
         ApplicationDbContext context;
-        ComboBox measuringUnit;
+        bool isChanged = false;
         public ModelCreationForm(string _type)
         {
             InitializeComponent();
@@ -25,33 +27,46 @@ namespace TradingCompanyApp.Views
             objType = _type;
 
             context = ApplicationDbContext.context;
-            InitializeView();
         }
 
-        private void InitializeView()
+        protected override void OnPaint(PaintEventArgs e)
         {
-
-            switch (objType)
+            if (!isChanged)
             {
-                case "Warehouse":
-                    textBox1.PlaceholderText = "Enter Warehouse Name";
-                    textBox2.PlaceholderText = "Enter Warehouse Address";
-                    textBox3.PlaceholderText = "Enter Responsible Person ID";
-                    break;
-                case "Product":
-                    textBox1.PlaceholderText = "Enter Item Code";
-                    textBox2.PlaceholderText = "Enter Item Name";
-                    groupBox1.Controls.Remove(textBox3);
-                    measuringUnit = new ComboBox();
-                    measuringUnit.DropDownStyle = ComboBoxStyle.DropDownList;
-                    measuringUnit.Items.AddRange(Enum.GetNames(typeof(MeasurementUnit)));
-                    measuringUnit.Location = textBox3.Location;
-                    groupBox1.Controls.Add(measuringUnit);
-                    break;
-                case "Employee":
-                    break;
+                isChanged = true;
+                switch (objType)
+                {
+                    case "Warehouse":
+                        textBox1.PlaceholderText = "Enter Warehouse Name";
+                        textBox2.PlaceholderText = "Enter Warehouse Address";
+                        textBox3.PlaceholderText = "Enter Responsible Person ID";
+                        break;
+                    case "Product":
+                        textBox1.PlaceholderText = "Enter Item Code";
+                        textBox2.PlaceholderText = "Enter Item Name";
+                        groupBox1.Controls.Remove(textBox3);
+                        measuringUnit = new System.Windows.Forms.ComboBox();
+                        measuringUnit.DropDownStyle = ComboBoxStyle.DropDownList;
+                        measuringUnit.Items.AddRange(Enum.GetNames(typeof(MeasurementUnit)));
+                        measuringUnit.Location = textBox3.Location;
+                        groupBox1.Controls.Add(measuringUnit);
+                        break;
+                    case "User":
+                        textBox1.PlaceholderText = "Enter Username";
+                        textBox2.PlaceholderText = "Enter Email";
+                        textBox3.PlaceholderText = "Enter Password";
+                        TextBox textBox4 = new TextBox();
+                        textBox4.PlaceholderText = "Enter Full Name";
+                        textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 25);
+                        ComboBox comboBox = new ComboBox();
+                        comboBox.Location = new Point(textBox4.Location.X + 50, textBox4.Location.Y + 25);
+                        comboBox.Items.AddRange(["MANAGER", "ADMIN"]);
+                        comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+                        groupBox1.Controls.AddRange([textBox4, comboBox]);
+                        break;
+                }
             }
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -76,7 +91,8 @@ namespace TradingCompanyApp.Views
                     };
                     context.Items.Add(item);
                     break;
-                case "Employee":
+                case "User":
+
                     break;
             }
             context.SaveChangesAsync();

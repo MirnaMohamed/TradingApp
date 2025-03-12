@@ -19,8 +19,7 @@ namespace TradingCompanyApp.Views
     {
         ApplicationDbContext _context;
         User currentUser;
-
-        TextBox name, address;
+        bool isFormUpdated = false;
         public HomeForm()
         {
             InitializeComponent();
@@ -31,38 +30,65 @@ namespace TradingCompanyApp.Views
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if(currentUser is not Customer)
+            if (!isFormUpdated)
             {
-                toolStripMenuItem2.Text = "Product";
-                if (currentUser is Employee emp)
+                isFormUpdated = true;
+                if (currentUser is not Customer)
                 {
-                    if (emp.Role == Role.ADMIN)
+                    toolStripMenuItem2.Text = "Product";
+                    if (currentUser is Employee emp)
                     {
-                        menuItem1SubItem1.Text = "Create";
-                        menuItem2SubItem1.Text = "Create";
-
+                        if (emp.Role == Role.ADMIN)
+                        {
+                            menuItem1SubItem1.Text = "Create";
+                            menuItem2SubItem1.Text = "Create";
+                            ToolStripMenuItem users = new ToolStripMenuItem();
+                            users.Text = "User";
+                            users.DropDownItems.Add("Create");
+                            users.DropDownItems.Add("Edit");
+                            users.DropDownItems.Add("View");
+                            menuStrip1.Items.Add(users);
+                            users.DropDownItemClicked += Users_DropDownItemClicked;
+                        }
+                        else
+                        {
+                            menuItem1SubItem1.Text = "Make a Report on the warehouse";
+                            menuItem1SubItem3.Visible = false;
+                        }
+                        menuItem1SubItem2.Text = "View";
+                        menuItem1SubItem2.Tag = "Warehouse";
+                        menuItem2SubItem2.Text = "View";
+                        menuItem2SubItem2.Tag = "Product";
                     }
                     else
                     {
-                        menuItem1SubItem1.Text = "Make a Report on the warehouse";
+
+                        button1.Text = "Add Supply Request";
+                        button2.Text = "Add Release Request";
                     }
-                    menuItem1SubItem2.Text = "View";
-                    menuItem1SubItem2.Tag = "Warehouse";
-                    menuItem2SubItem2.Text = "View";
-                    menuItem2SubItem2.Tag = "Product";
                 }
                 else
                 {
-
-                    button1.Text = "Add Supply Request";
-                    button2.Text = "Add Release Request";
+                    button1.Text = "Buy a Product";
                 }
-            }
-            else
-            {
-                button1.Text = "Buy a Product";
+
             }
 
+        }
+
+        private void Users_DropDownItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            isFormUpdated = false;
+            switch (e.ClickedItem.Text)
+            {
+                case "Create":
+                    ViewDialogBox(item.Text);
+                    break;
+                case "View":
+                    ViewList(e.ClickedItem.Tag.ToString());
+                    break;
+            }
         }
 
         private void toolStripMenuItem1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -86,6 +112,7 @@ namespace TradingCompanyApp.Views
                 MessageBox.Show("Created");
                 _context.SaveChangesAsync();
             }
+
         }
 
         private void ViewList(string menuItem)
@@ -113,7 +140,7 @@ namespace TradingCompanyApp.Views
                     warehouseList.ValueMember = "WarehouseId";
                     warehouseList.DisplayMember = "Name";
                     warehouseList.DropDownStyle = ComboBoxStyle.DropDownList;
-                    Button okBtn = new Button() { Text = "OK", Left = 180, Width = 80, Top = 80, DialogResult = DialogResult.OK };
+                    Button okBtn = new Button() { Text = "OK", Left = 200, Width = 80, Top = 120, DialogResult = DialogResult.OK };
 
                     dialog.Controls.Add(textLabel);
                     dialog.Controls.Add(warehouseList);
@@ -121,8 +148,11 @@ namespace TradingCompanyApp.Views
                     dialog.AcceptButton = okBtn;
 
                     int warehouseID = dialog.ShowDialog() == DialogResult.OK ? (int) warehouseList.SelectedValue: -1;
-                    WarehouseDetailsForm frm = new WarehouseDetailsForm(true, warehouseID);
-                    LoginForm.SwitchForm(frm, this);
+                    if(warehouseID != -1)
+                    {
+                        WarehouseDetailsForm frm = new WarehouseDetailsForm(true, warehouseID);
+                        LoginForm.SwitchForm(frm, this);
+                    }
                 }
                 else
                 {

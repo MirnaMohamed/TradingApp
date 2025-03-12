@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TradingCompanyApp.Models;
 using TradingCompanyApp.Models.Enums;
+using TradingCompanyApp.Services;
 
 namespace TradingCompanyApp.Views
 {
@@ -29,37 +31,37 @@ namespace TradingCompanyApp.Views
 
         protected override void OnPaint(PaintEventArgs e)
         {
-
-            if (currentUser is Employee emp)
+            if(currentUser is not Customer)
             {
-                toolStripMenuItem1.Text = "Warehouse";
                 toolStripMenuItem2.Text = "Product";
-                button1.Text = "Add/Update Supply Request";
-                button2.Text = "Add/Update Release Request";
-                if (emp.Role == Role.ADMIN)
+                if (currentUser is Employee emp)
                 {
-                    menuItem1SubItem1.Text = "Create one";
-                    menuItem1SubItem2.Text = "Edit a warehouse";
-                    menuItem1SubItem3.Text = "View Warehouses";
+                    if (emp.Role == Role.ADMIN)
+                    {
+                        menuItem1SubItem1.Text = "Create";
+                        menuItem2SubItem1.Text = "Create";
 
-                    menuItem2SubItem1.Text = "Create one";
-                    menuItem2SubItem2.Text = "Edit a product";
-                    menuItem2SubItem3.Text = "View Products";
+                    }
+                    else
+                    {
+                        menuItem1SubItem1.Text = "Make a Report on the warehouse";
+                    }
+                    menuItem1SubItem2.Text = "View";
+                    menuItem1SubItem2.Tag = "Warehouse";
+                    menuItem2SubItem2.Text = "View";
+                    menuItem2SubItem2.Tag = "Product";
                 }
                 else
                 {
-                    button1.Text = "Add/Update Supply Request";
-                    button2.Text = "Add/Update Release Request";
+
+                    button1.Text = "Add Supply Request";
+                    button2.Text = "Add Release Request";
                 }
             }
-            else if (currentUser is Supplier supp)
+            else
             {
-
+                button1.Text = "Buy a Product";
             }
-        }
-
-        private void menuItem1SubItem1_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -68,8 +70,11 @@ namespace TradingCompanyApp.Views
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             switch (e.ClickedItem.Text)
             {
-                case "Create one":
+                case "Create":
                     ViewDialogBox(item.Text);
+                    break;
+                case "View":
+                    ViewList(e.ClickedItem.Tag.ToString());
                     break;
             }
         }
@@ -83,14 +88,54 @@ namespace TradingCompanyApp.Views
             }
         }
 
-        private void toolStripMenuItem2_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void ViewList(string menuItem)
         {
-            ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            switch (e.ClickedItem.Text)
+            if(menuItem == "Warehouse")
             {
-                case "Create one":
-                    ViewDialogBox(item.Text);
-                    break;
+                _context.WarehouseItem.Load();
+                listBox1.Items.Clear();
+                if(currentUser is Employee emp && emp.Role == Role.ADMIN)
+                {
+                    Form dialog = new Form()
+                    {
+                        Width = 500,
+                        Height = 350,
+                        FormBorderStyle = FormBorderStyle.FixedDialog,
+                        Text = "Select Warehouse",
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
+
+                    Label textLabel = new Label() { Left = 20, Top = 20, Text = "Enter Warehouse ID:" };
+                    //TextBox inputBox = new TextBox() { Left = 20, Top = 50, Width = 240 };
+                    ComboBox warehouseList = new ComboBox();
+                    warehouseList.Location = new Point(textLabel.Location.X +50, textLabel.Location.Y + 50);
+                    warehouseList.DataSource = _context.Warehouses.ToList();
+                    warehouseList.ValueMember = "WarehouseId";
+                    warehouseList.DisplayMember = "Name";
+                    warehouseList.DropDownStyle = ComboBoxStyle.DropDownList;
+                    Button okBtn = new Button() { Text = "OK", Left = 180, Width = 80, Top = 80, DialogResult = DialogResult.OK };
+
+                    dialog.Controls.Add(textLabel);
+                    dialog.Controls.Add(warehouseList);
+                    dialog.Controls.Add(okBtn);
+                    dialog.AcceptButton = okBtn;
+
+                    int warehouseID = dialog.ShowDialog() == DialogResult.OK ? (int) warehouseList.SelectedValue: -1;
+                    WarehouseDetailsForm frm = new WarehouseDetailsForm(true, warehouseID);
+                    LoginForm.SwitchForm(frm, this);
+                }
+                else
+                {
+                    var warehouse = _context.Warehouses.FirstOrDefault(w => w.ManagerId == currentUser.UserId);
+                    if(warehouse == null)
+                    {
+                        MessageBox.Show("You don't manage any warehouse");
+                    }
+                    else
+                    {
+                        listBox1.Items.Add(warehouse);
+                    }
+                }
             }
         }
 
@@ -122,6 +167,12 @@ namespace TradingCompanyApp.Views
             {
                 MessageBox.Show("Transfer Request added/updated successfully");
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            LoginForm frm = new LoginForm();
+            LoginForm.SwitchForm(frm, this);
         }
     }
 }

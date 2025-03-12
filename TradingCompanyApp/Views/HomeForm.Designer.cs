@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             menuStrip1 = new MenuStrip();
-            toolStripMenuItem1 = new ToolStripMenuItem();
+            warehouseToolStripItem = new ToolStripMenuItem();
             menuItem1SubItem1 = new ToolStripMenuItem();
             menuItem1SubItem2 = new ToolStripMenuItem();
             menuItem1SubItem3 = new ToolStripMenuItem();
@@ -42,53 +42,53 @@
             button2 = new Button();
             button3 = new Button();
             button4 = new Button();
+            listBox1 = new ListBox();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { warehouseToolStripItem, toolStripMenuItem2 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 28);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
-            // toolStripMenuItem1
+            // warehouseToolStripItem
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { menuItem1SubItem1, menuItem1SubItem2, menuItem1SubItem3 });
-            toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(156, 24);
-            toolStripMenuItem1.Text = "toolStripMenuItem1";
-            toolStripMenuItem1.DropDownItemClicked += toolStripMenuItem1_DropDownItemClicked;
+            warehouseToolStripItem.DropDownItems.AddRange(new ToolStripItem[] { menuItem1SubItem1, menuItem1SubItem2, menuItem1SubItem3 });
+            warehouseToolStripItem.Name = "warehouseToolStripItem";
+            warehouseToolStripItem.Size = new Size(96, 24);
+            warehouseToolStripItem.Text = "Warehouse";
+            warehouseToolStripItem.DropDownItemClicked += toolStripMenuItem1_DropDownItemClicked;
             // 
             // menuItem1SubItem1
             // 
             menuItem1SubItem1.Name = "menuItem1SubItem1";
-            menuItem1SubItem1.Size = new Size(99, 26);
+            menuItem1SubItem1.Size = new Size(224, 26);
             menuItem1SubItem1.Text = "x";
-            menuItem1SubItem1.Click += menuItem1SubItem1_Click;
             // 
             // menuItem1SubItem2
             // 
             menuItem1SubItem2.Name = "menuItem1SubItem2";
-            menuItem1SubItem2.Size = new Size(99, 26);
+            menuItem1SubItem2.Size = new Size(224, 26);
             menuItem1SubItem2.Text = "y";
             // 
             // menuItem1SubItem3
             // 
             menuItem1SubItem3.Name = "menuItem1SubItem3";
-            menuItem1SubItem3.Size = new Size(99, 26);
+            menuItem1SubItem3.Size = new Size(224, 26);
             menuItem1SubItem3.Text = "z";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { menuItem2SubItem1, menuItem2SubItem2, menuItem2SubItem3 });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(156, 24);
-            toolStripMenuItem2.Text = "toolStripMenuItem2";
-            toolStripMenuItem2.DropDownItemClicked += toolStripMenuItem2_DropDownItemClicked;
+            toolStripMenuItem2.Size = new Size(32, 24);
+            toolStripMenuItem2.Text = "b";
+            toolStripMenuItem2.DropDownItemClicked += toolStripMenuItem1_DropDownItemClicked;
             // 
             // menuItem2SubItem1
             // 
@@ -124,7 +124,7 @@
             button1.Name = "button1";
             button1.Size = new Size(221, 40);
             button1.TabIndex = 2;
-            button1.Text = "Add/Update Supply Request";
+            button1.Text = "Add Supply Request";
             button1.UseVisualStyleBackColor = true;
             button1.Click += ModifySupplyRequest;
             // 
@@ -134,7 +134,7 @@
             button2.Name = "button2";
             button2.Size = new Size(221, 40);
             button2.TabIndex = 3;
-            button2.Text = "Add/Update Release Request";
+            button2.Text = "Add Release Request";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
@@ -149,6 +149,7 @@
             button3.TabIndex = 4;
             button3.Text = "Log Out";
             button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
@@ -156,15 +157,25 @@
             button4.Name = "button4";
             button4.Size = new Size(221, 40);
             button4.TabIndex = 5;
-            button4.Text = "Add/Update Transfer Request";
+            button4.Text = "Add Transfer Request";
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
+            // 
+            // listBox1
+            // 
+            listBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            listBox1.FormattingEnabled = true;
+            listBox1.Location = new Point(445, 98);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(309, 264);
+            listBox1.TabIndex = 6;
             // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(listBox1);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -183,7 +194,7 @@
         #endregion
 
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem warehouseToolStripItem;
         private ToolStripMenuItem toolStripMenuItem2;
         private ToolStripMenuItem menuItem1SubItem1;
         private ToolStripMenuItem menuItem1SubItem2;
@@ -196,5 +207,6 @@
         private Button button2;
         private Button button3;
         private Button button4;
+        private ListBox listBox1;
     }
 }

@@ -150,21 +150,7 @@ namespace TradingCompanyApp.Views
                     _context.ActiveUser = newUser;
                     _context.SaveChangesAsync();
                     HomeForm form = new HomeForm();
-                    form.Location = this.Location;
-                    form.Opacity = 0;
-                    form.Show();
-                    this.Hide();
-                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                    timer.Interval = 30;
-                    timer.Tick += (s, e) =>
-                    {
-                        if (form.Opacity >= 1)
-                            timer.Stop();
-                        else
-                            form.Opacity += 0.05;
-                    };
-                    timer.Start();
-                    form.FormClosed += (_, _) => this.Close();
+                    LoginForm.SwitchForm(form, this);
                 }
                 catch(ArgumentException ae)
                 {

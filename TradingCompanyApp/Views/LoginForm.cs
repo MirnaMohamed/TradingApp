@@ -10,7 +10,7 @@ namespace TradingCompanyApp
         public LoginForm()
         {
             InitializeComponent();
-            _context = ApplicationDbContext.context;
+            _context = new ApplicationDbContext();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -22,7 +22,7 @@ namespace TradingCompanyApp
             {
                 if (textBox2.Text == user?.Password)
                 {
-                    _context.ActiveUser = user;
+                    ApplicationDbContext.ActiveUser = user;
                     HomeForm form = new HomeForm();
                     form.Location = this.Location;
                     form.Opacity = 0;

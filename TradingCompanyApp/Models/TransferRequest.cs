@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TradingCompanyApp.Models
 {
     [Table("TransferRequests")]
-    internal class TransferRequest
+    public class TransferRequest
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RequestId { get; set; }

@@ -30,10 +30,8 @@
         {
             button1 = new Button();
             label1 = new Label();
-            textBox2 = new TextBox();
-            textBox1 = new TextBox();
             comboBox1 = new ComboBox();
-            textBox3 = new TextBox();
+            groupBox1 = new GroupBox();
             SuspendLayout();
             // 
             // button1
@@ -63,28 +61,6 @@
             label1.TabIndex = 8;
             label1.Text = "Register As";
             // 
-            // textBox2
-            // 
-            textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Location = new Point(254, 322);
-            textBox2.Name = "textBox2";
-            textBox2.PasswordChar = '*';
-            textBox2.PlaceholderText = "Enter your password";
-            textBox2.Size = new Size(266, 27);
-            textBox2.TabIndex = 7;
-            textBox2.TextAlign = HorizontalAlignment.Center;
-            // 
-            // textBox1
-            // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.AutoCompleteMode = AutoCompleteMode.Suggest;
-            textBox1.Location = new Point(254, 222);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Enter your username";
-            textBox1.Size = new Size(266, 27);
-            textBox1.TabIndex = 6;
-            textBox1.TextAlign = HorizontalAlignment.Center;
-            // 
             // comboBox1
             // 
             comboBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -97,28 +73,25 @@
             comboBox1.TabIndex = 10;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
-            // textBox3
+            // groupBox1
             // 
-            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox3.AutoCompleteMode = AutoCompleteMode.Suggest;
-            textBox3.Location = new Point(254, 272);
-            textBox3.Name = "textBox3";
-            textBox3.PlaceholderText = "Enter your email";
-            textBox3.Size = new Size(266, 27);
-            textBox3.TabIndex = 11;
-            textBox3.TextAlign = HorizontalAlignment.Center;
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Location = new Point(185, 226);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(384, 321);
+            groupBox1.TabIndex = 11;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "groupBox1";
             // 
             // RegisterForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 703);
-            Controls.Add(textBox3);
+            Controls.Add(groupBox1);
             Controls.Add(comboBox1);
             Controls.Add(button1);
             Controls.Add(label1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
             MinimumSize = new Size(800, 750);
             Name = "RegisterForm";
             Text = "RegisterForm";
@@ -130,9 +103,7 @@
 
         private Button button1;
         private Label label1;
-        private TextBox textBox2;
-        private TextBox textBox1;
         private ComboBox comboBox1;
-        private TextBox textBox3;
+        private GroupBox groupBox1;
     }
 }

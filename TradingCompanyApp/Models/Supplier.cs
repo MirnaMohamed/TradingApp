@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TradingCompanyApp.Models
 {
-    internal class Supplier : User
+    public class Supplier : User
     {
         [Required, StringLength(50)]
         public string SupplierName { get; set; }

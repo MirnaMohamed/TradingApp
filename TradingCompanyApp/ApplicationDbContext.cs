@@ -18,9 +18,8 @@ namespace TradingCompanyApp
 
         public DbSet<ReleaseRequest> ReleaseRequests { get; set; }
         public DbSet<TransferRequest> TransferRequests { get; set; }
-        public User ActiveUser { get; set; }
+        public static User ActiveUser { get; set; }
 
-        public static ApplicationDbContext context = new ApplicationDbContext();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -99,12 +98,19 @@ namespace TradingCompanyApp
                     .HasForeignKey("UserId")
                     .OnDelete(DeleteBehavior.Restrict) 
                 );
-
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username).IsUnique();
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email).IsUnique();
 
             //making each child entity a separate table
             modelBuilder.Entity<Supplier>().ToTable("Suppliers");
             modelBuilder.Entity<Customer>().ToTable("Customers");
             modelBuilder.Entity<Employee>().ToTable("Employees");
+
+            modelBuilder.Entity<Customer>().Property(c => c.MobileNumber).IsRequired(false);
+            modelBuilder.Entity<Customer>().Property(c => c.Website).IsRequired(false);
+            modelBuilder.Entity<Supplier>().Property(c => c.MobileNumber).IsRequired(false);
 
             //modelBuilder.Entity<SupplyRequest>().ToTable("SupplyRequests");
             //modelBuilder.Entity<ReleaseRequest>().ToTable("ReleaseRequests");

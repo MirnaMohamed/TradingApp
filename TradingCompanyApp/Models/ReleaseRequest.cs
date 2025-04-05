@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TradingCompanyApp.Models
 {
     [Table("ReleaseRequest")]
-    internal class ReleaseRequest 
+    public class ReleaseRequest 
         //: ItemRequest
     {
         public int ReleaseRequestId { get; set; }

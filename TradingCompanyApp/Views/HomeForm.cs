@@ -18,80 +18,82 @@ namespace TradingCompanyApp.Views
 {
     public partial class HomeForm : Form
     {
-        ApplicationDbContext _context;
         User currentUser;
         bool isFormUpdated = false;
+        object _lockObj;
         public HomeForm()
         {
             InitializeComponent();
-            _context = ApplicationDbContext.context;
-            _context.Warehouses.Load();
-            _context.Users.Load();
-            currentUser = _context.ActiveUser;
+            currentUser = ApplicationDbContext.ActiveUser;
             welcomeLabel.Text += currentUser.Username + ", what do you like to do ?";
-            
+            _lockObj = new object();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (!isFormUpdated)
+            lock(_lockObj)
             {
-                isFormUpdated = true;
-                if (currentUser is not Customer)
+                if (!isFormUpdated)
                 {
-                    toolStripMenuItem2.Text = "Product";
-                    if (currentUser is Employee emp)
+                    isFormUpdated = true;
+
+                    //customize the menu for each user
+                    if (currentUser is not Customer) //employee or supplier
                     {
-                        if (emp.Role == Role.ADMIN)
+                        if (currentUser is Employee emp)
                         {
-                            menuItem1SubItem1.Text = "Create";
-                            menuItem2SubItem1.Text = "Create";
-                            ToolStripMenuItem users = new ToolStripMenuItem();
-                            users.Text = "User";
-                            users.DropDownItems.Add("Create");
-                            users.DropDownItems.Add("Edit");
-                            users.DropDownItems.Add("View");
-                            users.DropDownItems[2].Tag = "User";
-                            menuStrip1.Items.Add(users);
-                            users.DropDownItemClicked += Users_DropDownItemClicked;
+                            if (emp.Role == Role.ADMIN) 
+                            {
+                                toolStripMenuItem2.Text = "Product";
+                                warehouseSubItem1.Text = "Create";
+                                menuItem2SubItem1.Text = "Create";
+                                ToolStripMenuItem users = new ToolStripMenuItem();
+                                users.Text = "User";
+                                users.DropDownItems.Add("Create");
+                                users.DropDownItems.Add("Edit");
+                                users.DropDownItems.Add("View");
+                                users.DropDownItems[2].Tag = "User";
+                                menuStrip1.Items.Add(users);
+                                users.DropDownItemClicked += Users_DropDownItemClicked;
+                            }
+                            else //if it's a manager
+                            {
+                                warehouseSubItem1.Text = "Make a Report";
+                                warehouseSubItem3.Visible = false;
+                            }
+                            warehouseSubItem2.Text = "View";
+                            warehouseSubItem2.Tag = "Warehouse";
+                            menuItem2SubItem2.Text = "View";
+                            menuItem2SubItem2.Tag = "Product";
                         }
-                        else
+                        else //if it's a supplier or customer
                         {
-                            menuItem1SubItem1.Text = "Make a Report";
-                            menuItem1SubItem3.Visible = false;
+
+
+                            addSupplyRequestBtn.Text = "Add Supply Request";
+                            addReleaseRequestBtn.Text = "Add Release Request";
                         }
-                        menuItem1SubItem2.Text = "View";
-                        menuItem1SubItem2.Tag = "Warehouse";
-                        menuItem2SubItem2.Text = "View";
-                        menuItem2SubItem2.Tag = "Product";
                     }
                     else
                     {
-
-                        button1.Text = "Add Supply Request";
-                        button2.Text = "Add Release Request";
+                        addSupplyRequestBtn.Text = "Buy a Product";
                     }
-                }
-                else
-                {
-                    button1.Text = "Buy a Product";
-                }
 
+                }
             }
-
         }
 
         private void Users_DropDownItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
-            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            ToolStripMenuItem item = (ToolStripMenuItem)sender!;
             isFormUpdated = false;
-            switch (e.ClickedItem.Text)
+            switch (e.ClickedItem?.Text)
             {
                 case "Create":
                     ViewDialogBox(item.Text);
                     break;
                 case "View":
-                    ViewList(e.ClickedItem.Tag.ToString());
+                    ViewList(e.ClickedItem?.Tag?.ToString()!);
                     break;
             }
         }
@@ -99,9 +101,9 @@ namespace TradingCompanyApp.Views
         private void toolStripMenuItem1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            _context.Warehouses.Load();
-            _context.Users.Load();
-            switch (e.ClickedItem.Text)
+            //_context.Warehouses.Load();
+            //_context.Users.Load();
+            switch (e.ClickedItem?.Text)
             {
                 case "Create":
                     ViewDialogBox(item.Text);
@@ -109,23 +111,23 @@ namespace TradingCompanyApp.Views
                 case "View":
                     ViewList(e.ClickedItem.Tag.ToString());
                     break;
-                case "Make a Report":
-                    if (currentUser.AccessibleWarehouses.Count == 0)
-                    {
-                        MessageBox.Show("You don't manage any warehouse.");
-                    }
-                    else if(currentUser.AccessibleWarehouses.Count == 1)
-                    {
-                        WarehouseReport report = WarehouseService
-                            .GetWarehouseReport(currentUser.AccessibleWarehouses.First().WarehouseId, null, null);
-                        ReportForm form = new ReportForm(report);
-                        form.ShowDialog();
-                    }
-                    else
-                    {
-                        WarehouseDetailsForm frm = new WarehouseDetailsForm(false, null);
-                    }
-                    break;
+            //    case "Make a Report":
+            //        if (currentUser.AccessibleWarehouses.Count == 0)
+            //        {
+            //            MessageBox.Show("You don't manage any warehouse.");
+            //        }
+            //        else if(currentUser.AccessibleWarehouses.Count == 1)
+            //        {
+            //            WarehouseReport report = WarehouseService
+            //                .GetWarehouseReport(currentUser.AccessibleWarehouses.First().WarehouseId, null, null);
+            //            ReportForm form = new ReportForm(report);
+            //            form.ShowDialog();
+            //        }
+            //        else
+            //        {
+            //            WarehouseDetailsForm frm = new WarehouseDetailsForm(false, null);
+            //        }
+            //        break;
             }
         }
         private void ViewDialogBox(string type)
@@ -134,7 +136,7 @@ namespace TradingCompanyApp.Views
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show("Created");
-                _context.SaveChangesAsync();
+            //    _context.SaveChangesAsync();
             }
 
         }
@@ -143,7 +145,8 @@ namespace TradingCompanyApp.Views
         {
             if(menuItem == "Warehouse")
             {
-                _context.WarehouseItem.Load();
+                List<Warehouse> warehouses = WarehouseService.GetWarehouses();
+            //    _context.WarehouseItem.Load();
                 listView1.Items.Clear();
                 if(currentUser is Employee emp && emp.Role == Role.ADMIN)
                 {
@@ -156,10 +159,11 @@ namespace TradingCompanyApp.Views
                         StartPosition = FormStartPosition.CenterScreen
                     };
 
-                    Label textLabel = new Label() { Left = 20, Top = 20, Text = "Enter Warehouse ID:" };
+                    Label textLabel = new Label() { Left = 20, Top = 20, Text = "Select a Warehouse:", 
+                                                    Size = new Size(300, 30) };
                     ComboBox warehouseList = new ComboBox();
                     warehouseList.Location = new Point(textLabel.Location.X +50, textLabel.Location.Y + 50);
-                    warehouseList.DataSource = _context.Warehouses.ToList();
+                    warehouseList.DataSource = warehouses;
                     warehouseList.ValueMember = "WarehouseId";
                     warehouseList.DisplayMember = "Name";
                     warehouseList.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -177,39 +181,37 @@ namespace TradingCompanyApp.Views
                         LoginForm.SwitchForm(frm, this);
                     }
                 }
-                else
-                {
-                    var warehouse = _context.Warehouses.FirstOrDefault(w => w.ManagerId == currentUser.UserId);
-                    if(warehouse == null)
-                    {
-                        MessageBox.Show("You don't manage any warehouse");
-                    }
-                    else
-                    {
-                        listView1.Items.Add(new ListViewItem(warehouse.ToString()));
-                    }
-                }
+            //    else
+            //    {
+            //        var warehouse = _context.Warehouses.FirstOrDefault(w => w.ManagerId == currentUser.UserId);
+            //        if(warehouse == null)
+            //        {
+            //            MessageBox.Show("You don't manage any warehouse");
+            //        }
+            //        else
+            //        {
+            //            listView1.Items.Add(new ListViewItem(warehouse.ToString()));
+            //        }
+            //    }
             }
-            else
-            {
-                listView1.Items.Clear();
-                List<Employee> employees = EmployeeService.ViewEmployees();
-                foreach (Employee employee in employees)
-                    listView1.Items.Add(new ListViewItem(employee.ToString()));
-            }
+            //else
+            //{
+            //    listView1.Items.Clear();
+            //    List<Employee> employees = EmployeeService.ViewEmployees();
+            //    foreach (Employee employee in employees)
+            //        listView1.Items.Add(new ListViewItem(employee.ToString()));
+            //}
         }
-
-        private void ModifySupplyRequest(object sender, EventArgs e)
+        private void AddSupplyRequest_Click(object sender, EventArgs e)
         {
             RequestsForm frm = new RequestsForm(RequestType.SUPPLY);
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Supply Request added/updated successfully");
+                MessageBox.Show("Supply Request added successfully");
             }
         }
-
-        private void button2_Click(object sender, EventArgs e)
+        private void addReleaseRequest_Click(object sender, EventArgs e)
         {
             RequestsForm frm = new RequestsForm(RequestType.RELEASE);
 
@@ -219,7 +221,7 @@ namespace TradingCompanyApp.Views
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void AddTransferRequest_Click(object sender, EventArgs e)
         {
             RequestsForm frm = new RequestsForm(RequestType.TRANSFER);
 
@@ -229,10 +231,11 @@ namespace TradingCompanyApp.Views
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Logout_Click(object sender, EventArgs e)
         {
             LoginForm frm = new LoginForm();
             LoginForm.SwitchForm(frm, this);
         }
+
     }
 }

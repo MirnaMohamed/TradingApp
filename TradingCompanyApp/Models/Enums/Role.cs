@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TradingCompanyApp.Models.Enums
 {
-    internal enum Role
+    public enum Role
     {
         MANAGER,
         ADMIN

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TradingCompanyApp;
 
@@ -11,9 +12,11 @@ using TradingCompanyApp;
 namespace TradingCompanyApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250321215410_EnsureEmailUsernameUnique")]
+    partial class EnsureEmailUsernameUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,6 +332,7 @@ namespace TradingCompanyApp.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("MobileNumber")
+                        .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
 
@@ -338,6 +342,7 @@ namespace TradingCompanyApp.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Website")
+                        .IsRequired()
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
@@ -369,6 +374,7 @@ namespace TradingCompanyApp.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("MobileNumber")
+                        .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
 

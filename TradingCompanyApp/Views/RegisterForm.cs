@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StaticControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,79 +15,64 @@ namespace TradingCompanyApp.Views
 {
     public partial class RegisterForm : Form
     {
-        TextBox textBox4;
-        TextBox textBox5;
-        TextBox textBox6;
-        TextBox textBox7;
-        TextBox textBox8;
         ComboBox role;
         ApplicationDbContext _context;
+        bool formUpdated = false;
         public RegisterForm()
         {
             InitializeComponent();
-            _context = ApplicationDbContext.context;
-            textBox4 = new TextBox();
-            textBox4.Size = textBox3.Size;
-            textBox4.PlaceholderText = "Enter your Full Name";
-            textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 100);
-            textBox4.TextAlign = textBox3.TextAlign;
-            textBox4.Anchor = textBox3.Anchor;
+            _context = new ApplicationDbContext();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            if(comboBox1.SelectedItem != null)
+            if(!formUpdated)
             {
-                this.Controls.Add(textBox4);
-                if (comboBox1.SelectedItem.ToString() == "Employee")
+                formUpdated = true;
+                if (comboBox1.SelectedItem != null)
                 {
-                    this.Controls.Remove(textBox5);
-                    this.Controls.Remove(textBox6);
-                    this.Controls.Remove(textBox7);
-                    this.Controls.Remove(textBox8);
-                    this.Controls.Add(role);
-                }
-                else
-                {
-                    this.Controls.Remove(role);
-                    this.Controls.Add(textBox5);
-                    this.Controls.Add(textBox6);
-                    this.Controls.Add(textBox7);
-                    this.Controls.Add(textBox8);
+                    if (comboBox1.SelectedItem.ToString() == "Employee")
+                    {
+                        EmployeeForm employeeForm = new EmployeeForm();
+                        //employeeForm.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                        //employeeForm.Location = new Point(label1.Location.X, label1.Location.Y + 25);
+                        ComboBox roleList = (ComboBox)employeeForm.Controls["comboBox1"];
+                        roleList.DataSource = Enum.GetValues(typeof(Role));
+                        roleList.DisplayMember = "Name";
+                        groupBox1.Controls.Clear();
+                        groupBox1.Controls.Add(employeeForm);
+                        groupBox1.Text = "Employee";
+                    }
+                    else
+                    {
+                        groupBox1.Controls.Clear();
+                        FillCustomerControl customerControl = new FillCustomerControl();
+                        groupBox1.Controls.Add(customerControl);
+                    }
                 }
             }
+            
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox1.SelectedItem == "Employee")
             {
-                role = new ComboBox();
-                role.DropDownStyle = ComboBoxStyle.DropDownList;
-                role.Items.AddRange(Enum.GetNames(typeof(Role)));
-                role.Size = new Size(151, 28);
-                role.Location = new Point(textBox4.Location.X + 50, textBox4.Location.Y + 50);
-                
+                EmployeeForm employeeForm = new EmployeeForm();
+                ComboBox roleList = (ComboBox) employeeForm.Controls["comboBox1"];
+                roleList.DataSource = Enum.GetValues(typeof(Role));
+                roleList.DisplayMember = "Name";
+                groupBox1.Controls.Clear();
+                groupBox1.Controls.Add(employeeForm);
             }
             else
             {
-                textBox5 = new TextBox();
-                textBox5.Location = new Point(textBox4.Location.X, textBox4.Location.Y + 50);
-                textBox5.PlaceholderText = "Enter your Phone Number";
-                textBox6 = new TextBox();
-                textBox6.Location = new Point(textBox5.Location.X, textBox5.Location.Y + 50);
-                textBox6.PlaceholderText = "Enter your Mobile Number";
-                textBox7 = new TextBox();
-                textBox7.Location = new Point(textBox6.Location.X, textBox6.Location.Y + 50);
-                textBox7.PlaceholderText = "Enter your Fax Number";
-                textBox8 = new TextBox();
-                textBox8.Location = new Point(textBox7.Location.X, textBox7.Location.Y + 50);
-                textBox8.PlaceholderText = "Enter your Website";
-                textBox5.Size = textBox6.Size = textBox7.Size = textBox8.Size = textBox4.Size;
-                textBox5.TextAlign = textBox6.TextAlign = textBox7.TextAlign = textBox8.TextAlign = textBox4.TextAlign;
-                textBox5.Anchor = textBox6.Anchor = textBox7.Anchor = textBox8.Anchor = textBox4.Anchor;
+                groupBox1.Controls.Clear();
+                FillCustomerControl customerControl = new FillCustomerControl();
+                groupBox1.Controls.Add(customerControl);
             }
+            formUpdated = false;
             Invalidate();
         }
 
@@ -102,52 +88,48 @@ namespace TradingCompanyApp.Views
                     switch (userType)
                     {
                         case "Employee":
+                            ComboBox roleList = (ComboBox)groupBox1.Controls["employeeForm"].Controls["comboBox1"];
                             newUser = new Employee
                             {
-                                Username = textBox1.Text,
-                                Email = textBox2.Text,
-                                Password = textBox3.Text,
-                                FullName = textBox4.Text,
-                                Role = Enum.Parse<Role>(role.SelectedItem.ToString())
+                                Username = groupBox1.Controls["employeeForm"].Controls["textBox1"].Text,
+                                Email = groupBox1.Controls["employeeForm"].Controls["textBox2"].Text,
+                                Password = groupBox1.Controls["employeeForm"].Controls["textBox3"].Text,
+                                FullName = groupBox1.Controls["employeeForm"].Controls["textBox4"].Text,
+                                Role = Enum.Parse<Role>(roleList.SelectedItem.ToString())
                             };
                             break;
                         case "Supplier":
                             newUser = new Supplier
                             {
-                                Username = textBox1.Text,
-                                Email = textBox2.Text,
-                                Password = textBox3.Text,
-                                SupplierName = textBox4.Text,
-                                PhoneNumber = textBox5.Text,
-                                MobileNumber = textBox6.Text,
-                                FaxNumber = textBox7.Text,
-                                Website = textBox8.Text
+                                Username = groupBox1.Controls["FillCustomerControl"].Controls["textBox1"].Text,
+                                Email = groupBox1.Controls["FillCustomerControl"].Controls["textBox2"].Text,
+                                Password = groupBox1.Controls["FillCustomerControl"].Controls["textBox3"].Text,
+                                SupplierName = groupBox1.Controls["FillCustomerControl"].Controls["textBox4"].Text,
+                                PhoneNumber = groupBox1.Controls["FillCustomerControl"].Controls["textBox5"].Text,
+                                FaxNumber = groupBox1.Controls["FillCustomerControl"].Controls["textBox6"].Text,
+                                Website = groupBox1.Controls["FillCustomerControl"].Controls["textBox7"].Text
+
+                                //MobileNumber = textBox6.Text,
                             };
                             break;
                         case "Customer":
                             newUser = new Customer
                             {
-                                Username = textBox1.Text,
-                                Email = textBox2.Text,
-                                Password = textBox3.Text,
-                                CustomerName = textBox4.Text,
-                                PhoneNumber = textBox5.Text,
-                                MobileNumber = textBox6.Text,
-                                FaxNumber = textBox7.Text,
-                                Website = textBox8.Text
+                                Username = groupBox1.Controls["FillCustomerControl"].Controls["textBox1"].Text,
+                                Email = groupBox1.Controls["FillCustomerControl"].Controls["textBox2"].Text,
+                                Password = groupBox1.Controls["FillCustomerControl"].Controls["textBox3"].Text,
+                                CustomerName = groupBox1.Controls["FillCustomerControl"].Controls["textBox4"].Text,
+                                PhoneNumber = groupBox1.Controls["FillCustomerControl"].Controls["textBox5"].Text,
+                                FaxNumber = groupBox1.Controls["FillCustomerControl"].Controls["textBox6"].Text,
+                                Website = groupBox1.Controls["FillCustomerControl"].Controls["textBox7"].Text
                             };
                             break;
                         default:
-                            newUser = new User
-                            {
-                                Username = textBox1.Text,
-                                Email = textBox2.Text,
-                                Password = textBox3.Text
-                            };
+                            throw new InvalidEnumArgumentException("Please select a user type");
                             break;
                     }
                     _context.Users.Add(newUser);
-                    _context.ActiveUser = newUser;
+                    ApplicationDbContext.ActiveUser = newUser;
                     await _context.SaveChangesAsync();
                     HomeForm form = new HomeForm();
                     LoginForm.SwitchForm(form, this);
@@ -158,7 +140,7 @@ namespace TradingCompanyApp.Views
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.InnerException.Message);
                 }
             }
             else

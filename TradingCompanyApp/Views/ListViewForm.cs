@@ -29,7 +29,7 @@ namespace TradingCompanyApp.Views
                 
                 if(int.TryParse(listView1.SelectedItems[0].Text.Substring(4, 2), out id))
                 {
-                    warehouseReport = WarehouseService.GetWarehouseReport(id, null, null);
+                    warehouseReport = ReportService.GetWarehouseReport(id, null, null);
                     DialogResult = DialogResult.OK;
                 }
             }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TradingCompanyApp.Models.Enums
 {
-    internal enum MeasurementUnit
+    public enum MeasurementUnit
     {
         KG,
         LITRE,

@@ -5,7 +5,7 @@ using TradingCompanyApp.Models.Enums;
 namespace TradingCompanyApp.Models
 {
     [Table("Items")]
-    internal class Item
+    public class Item
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None), MaxLength(25)]
         public string ItemCode { get; set; }

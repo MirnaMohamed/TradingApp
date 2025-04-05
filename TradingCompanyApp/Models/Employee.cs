@@ -10,7 +10,7 @@ using TradingCompanyApp.Models.Enums;
 
 namespace TradingCompanyApp.Models
 {
-    internal class Employee : User
+    public class Employee : User
     {
         [MaxLength(50)]
         public string FullName { get; set; }

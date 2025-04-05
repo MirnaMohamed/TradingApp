@@ -3,7 +3,7 @@
 namespace TradingCompanyApp.Models
 {
     [Table("Release_Request_Items")]
-    internal class ReleaseRequestItem
+    public class ReleaseRequestItem
     {
         [ForeignKey("ReleaseRequest")]
         public int RequestId { get; set; }

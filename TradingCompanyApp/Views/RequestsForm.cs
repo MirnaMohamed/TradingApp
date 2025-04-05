@@ -15,7 +15,7 @@ namespace TradingCompanyApp.Views
         {
             InitializeComponent();
             requestType = _request;
-            context = ApplicationDbContext.context;
+            context = new ApplicationDbContext();
             extraTextBox = new TextBox();
             extraTextBox.PlaceholderText = "Enter warehouse name";
             extraTextBox.Location = new Point(textBox1.Location.X, textBox1.Location.Y + 50);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TradingCompanyApp.Models
 {
-    internal class Warehouse
+    public class Warehouse
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WarehouseId { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StaticControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +35,7 @@ namespace TradingCompanyApp.Views
             textBox4.Location = new Point(textBox3.Location.X, textBox3.Location.Y + 50);
             textBox4.Size = textBox3.Size;
             textBox4.Anchor = textBox3.Anchor;
-            context = ApplicationDbContext.context;
+            context = new ApplicationDbContext();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -45,9 +46,14 @@ namespace TradingCompanyApp.Views
                 switch (objType)
                 {
                     case "Warehouse":
-                        textBox1.PlaceholderText = "Enter Warehouse Name";
-                        textBox2.PlaceholderText = "Enter Warehouse Address";
-                        textBox3.PlaceholderText = "Enter Responsible Person ID";
+                        groupBox1.Controls.Clear();
+                        groupBox1.Controls.Add(button1);
+                        WarehouseCreationForm warehouseForm = new WarehouseCreationForm();
+                        ComboBox managerList = (ComboBox) warehouseForm.Controls.Find("comboBox1", true).First();
+                        managerList.DataSource = EmployeeService.ViewEmployees();
+                        managerList.ValueMember = "UserId";
+                        managerList.DisplayMember = "FullName";
+                        groupBox1.Controls.Add(warehouseForm);
                         break;
                     case "Product":
                         textBox1.PlaceholderText = "Enter Item Code";

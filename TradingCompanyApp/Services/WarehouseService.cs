@@ -4,25 +4,32 @@ using TradingCompanyApp.Models.Reports;
 
 namespace TradingCompanyApp.Services
 {
-    internal static class WarehouseService
+    public static class WarehouseService
     {
-        static ApplicationDbContext context = ApplicationDbContext.context;
-        internal static void AddWarehouse(Warehouse warehouse)
+        static ApplicationDbContext context = new ApplicationDbContext();
+        public static void AddWarehouse(Warehouse warehouse)
         {
-            warehouse.AuthorizedUsers.Add(context.ActiveUser);
-            Employee manager = (Employee) context.Users.Find(warehouse.ManagerId);
-            manager.AccessibleWarehouses.Add(warehouse);
+            warehouse.AuthorizedUsers.Add(ApplicationDbContext.ActiveUser); //add the current user to the authorized users
+            ApplicationDbContext.ActiveUser.AccessibleWarehouses.Add(warehouse); //add the warehouse to accessible warehouses
             context.Warehouses.Add(warehouse);
-            context.ActiveUser.AccessibleWarehouses.Add(warehouse);
-            context.Users.Update(context.ActiveUser);
-            context.Users.Update(manager);
+
+            Employee manager = (Employee)context.Users.Find(warehouse.ManagerId)!;
+            if (manager != ApplicationDbContext.ActiveUser && manager != null)
+            {
+                manager.AccessibleWarehouses.Add(warehouse);
+                warehouse.AuthorizedUsers.Add(manager);
+            }
+            else if (manager is null)
+            {
+                throw new ArgumentException("Invalid Manager ID");
+            }
             context.SaveChanges();
         }
         internal static void UpdateWarehouseById(int id, Dictionary<string, object> options)
         {
             var warehouse = context.Warehouses.Find(id);
             if (warehouse == null)
-                MessageBox.Show($"Warehouse with ID {id} is not found");
+                throw new ArgumentException($"Warehouse with ID {id} is not found");
             else
             {
                 for (int i = 0; i < options.Count; i++)
@@ -36,7 +43,7 @@ namespace TradingCompanyApp.Services
                             warehouse.Address = options.ElementAt(i).Value.ToString();
                             break;
                         case "Manager ID":
-                            warehouse.ManagerId = (int) options.ElementAt(i).Value;
+                            warehouse.ManagerId = (int)options.ElementAt(i).Value;
                             break;
                     }
                 }
@@ -44,60 +51,36 @@ namespace TradingCompanyApp.Services
                 context.SaveChanges();
             }
         }
-        internal static WarehouseReport GetWarehouseReport(int warehouseId, DateTime? startDate, DateTime? endDate)
+        internal static List<Warehouse> GetWarehousesByCurrentManagerId(int id)
         {
-            var warehouse = context.Warehouses
-                .FirstOrDefault(w => w.WarehouseId == warehouseId);
-
-            if (warehouse == null)
-                throw new Exception($"Warehouse with ID {warehouseId} not found.");
-
-            var initialStock = warehouse.Items
-                .Select(item => new WarehouseReportItem
-                {
-                    ItemCode = item.ItemCode,
-                    Quantity = item.Quantity
-                }).ToList();
-
-            var supplyTransactions = context.SupplyRequests
-                .Where(r => r.WarehouseName == warehouse.Name && r.RequestDate >= startDate && r.RequestDate <= endDate)
-                .ToList();
-
-            var releaseTransactions = context.ReleaseRequests
-                .Where(r => r.WarehouseName == warehouse.Name && r.RequestDate >= startDate && r.RequestDate <= endDate)
-                .ToList();
-
-            var transferTransactions = context.TransferRequests
-                .Where(r => r.SourceWarehouseName == warehouse.Name || r.DestinationWarehouseName == warehouse.Name)
-                .Where(r => r.RequestDate >= startDate && r.RequestDate <= endDate)
-                .ToList();
-
-            var finalStock = warehouse.Items
-                .Select(item => new WarehouseReportItem
-                {
-                    ItemCode = item.ItemCode,
-                    Quantity = item.Quantity
-                }).ToList();
-
-            return new WarehouseReport
-            {
-                WarehouseId = warehouseId,
-                WarehouseName = warehouse.Name,
-                StartDate = startDate,
-                EndDate = endDate,
-                InitialStock = initialStock,
-                SupplyRequests = supplyTransactions,
-                ReleaseRequests = releaseTransactions,
-                TransferRequests = transferTransactions,
-                CurrentStock = finalStock
-            };
-        }
-        internal static List<Warehouse> GetWarehousesByCurrentManagerId()
-        {
-            context.Warehouses.Load();
-            Employee emp = (Employee) context.ActiveUser;
+            Employee emp = (Employee)context.Users.Include(s => s.AccessibleWarehouses).SingleOrDefault(e => e.UserId == id)!;
             return context.Warehouses.Where(w => w.ManagerId == emp.UserId).ToList();
         }
-        
+        public static List<Warehouse> GetWarehouses()
+        {
+            return context.Warehouses.Include(w => w.AuthorizedUsers).ToList();
+        }
+
+        public static Warehouse GetWarehouseById(int id)
+        {
+            var warehouse = context.Warehouses.Find(id);
+            if (warehouse == null)
+                throw new ArgumentException($"Warehouse with ID {id} is not found");
+            else
+                return warehouse;
+        }
+
+        public static bool DeleteWarehouseById(int id)
+        {
+            var warehouse = context.Warehouses.Find(id);
+            if (warehouse == null)
+                throw new ArgumentException($"Warehouse with ID {id} is not found");
+            else
+            {
+                context.Warehouses.Remove(warehouse);
+                context.SaveChanges();
+                return true;
+            }
+        }
     }
 }

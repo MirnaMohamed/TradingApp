@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TradingCompanyApp.Models
 {
-    internal class WarehouseItem
+    public class WarehouseItem
     {
         [ForeignKey("Warehouse")]
         public int WarehouseId { get; set; }

@@ -31,18 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
             menuStrip1 = new MenuStrip();
             warehouseToolStripItem = new ToolStripMenuItem();
-            menuItem1SubItem1 = new ToolStripMenuItem();
-            menuItem1SubItem2 = new ToolStripMenuItem();
-            menuItem1SubItem3 = new ToolStripMenuItem();
+            warehouseSubItem1 = new ToolStripMenuItem();
+            warehouseSubItem2 = new ToolStripMenuItem();
+            warehouseSubItem3 = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
             menuItem2SubItem1 = new ToolStripMenuItem();
             menuItem2SubItem2 = new ToolStripMenuItem();
             menuItem2SubItem3 = new ToolStripMenuItem();
             welcomeLabel = new Label();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
+            addSupplyRequestBtn = new Button();
+            addReleaseRequestBtn = new Button();
+            logoutBtn = new Button();
+            addTransferRequestBtn = new Button();
             listView1 = new ListView();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -59,29 +59,29 @@
             // 
             // warehouseToolStripItem
             // 
-            warehouseToolStripItem.DropDownItems.AddRange(new ToolStripItem[] { menuItem1SubItem1, menuItem1SubItem2, menuItem1SubItem3 });
+            warehouseToolStripItem.DropDownItems.AddRange(new ToolStripItem[] { warehouseSubItem1, warehouseSubItem2, warehouseSubItem3 });
             warehouseToolStripItem.Name = "warehouseToolStripItem";
             warehouseToolStripItem.Size = new Size(96, 24);
             warehouseToolStripItem.Text = "Warehouse";
             warehouseToolStripItem.DropDownItemClicked += toolStripMenuItem1_DropDownItemClicked;
             // 
-            // menuItem1SubItem1
+            // warehouseSubItem1
             // 
-            menuItem1SubItem1.Name = "menuItem1SubItem1";
-            menuItem1SubItem1.Size = new Size(99, 26);
-            menuItem1SubItem1.Text = "x";
+            warehouseSubItem1.Name = "warehouseSubItem1";
+            warehouseSubItem1.Size = new Size(224, 26);
+            warehouseSubItem1.Text = "x";
             // 
-            // menuItem1SubItem2
+            // warehouseSubItem2
             // 
-            menuItem1SubItem2.Name = "menuItem1SubItem2";
-            menuItem1SubItem2.Size = new Size(99, 26);
-            menuItem1SubItem2.Text = "y";
+            warehouseSubItem2.Name = "warehouseSubItem2";
+            warehouseSubItem2.Size = new Size(224, 26);
+            warehouseSubItem2.Text = "y";
             // 
-            // menuItem1SubItem3
+            // warehouseSubItem3
             // 
-            menuItem1SubItem3.Name = "menuItem1SubItem3";
-            menuItem1SubItem3.Size = new Size(99, 26);
-            menuItem1SubItem3.Text = "z";
+            warehouseSubItem3.Name = "warehouseSubItem3";
+            warehouseSubItem3.Size = new Size(224, 26);
+            warehouseSubItem3.Text = "z";
             // 
             // toolStripMenuItem2
             // 
@@ -119,48 +119,48 @@
             welcomeLabel.TabIndex = 1;
             welcomeLabel.Text = "Welcome ";
             // 
-            // button1
+            // addSupplyRequestBtn
             // 
-            button1.Location = new Point(85, 122);
-            button1.Name = "button1";
-            button1.Size = new Size(221, 40);
-            button1.TabIndex = 2;
-            button1.Text = "Add Supply Request";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += ModifySupplyRequest;
+            addSupplyRequestBtn.Location = new Point(85, 122);
+            addSupplyRequestBtn.Name = "addSupplyRequestBtn";
+            addSupplyRequestBtn.Size = new Size(221, 40);
+            addSupplyRequestBtn.TabIndex = 2;
+            addSupplyRequestBtn.Text = "Add Supply Request";
+            addSupplyRequestBtn.UseVisualStyleBackColor = true;
+            addSupplyRequestBtn.Click += AddSupplyRequest_Click;
             // 
-            // button2
+            // addReleaseRequestBtn
             // 
-            button2.Location = new Point(85, 186);
-            button2.Name = "button2";
-            button2.Size = new Size(221, 40);
-            button2.TabIndex = 3;
-            button2.Text = "Add Release Request";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            addReleaseRequestBtn.Location = new Point(85, 186);
+            addReleaseRequestBtn.Name = "addReleaseRequestBtn";
+            addReleaseRequestBtn.Size = new Size(221, 40);
+            addReleaseRequestBtn.TabIndex = 3;
+            addReleaseRequestBtn.Text = "Add Release Request";
+            addReleaseRequestBtn.UseVisualStyleBackColor = true;
+            addReleaseRequestBtn.Click += addReleaseRequest_Click;
             // 
-            // button3
+            // logoutBtn
             // 
-            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button3.BackColor = Color.IndianRed;
-            button3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button3.Location = new Point(680, 384);
-            button3.Name = "button3";
-            button3.Size = new Size(95, 43);
-            button3.TabIndex = 4;
-            button3.Text = "Log Out";
-            button3.UseVisualStyleBackColor = false;
-            button3.Click += button3_Click;
+            logoutBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            logoutBtn.BackColor = Color.IndianRed;
+            logoutBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            logoutBtn.Location = new Point(680, 384);
+            logoutBtn.Name = "logoutBtn";
+            logoutBtn.Size = new Size(95, 43);
+            logoutBtn.TabIndex = 4;
+            logoutBtn.Text = "Log Out";
+            logoutBtn.UseVisualStyleBackColor = false;
+            logoutBtn.Click += Logout_Click;
             // 
-            // button4
+            // addTransferRequestBtn
             // 
-            button4.Location = new Point(85, 250);
-            button4.Name = "button4";
-            button4.Size = new Size(221, 40);
-            button4.TabIndex = 5;
-            button4.Text = "Add Transfer Request";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
+            addTransferRequestBtn.Location = new Point(85, 250);
+            addTransferRequestBtn.Name = "addTransferRequestBtn";
+            addTransferRequestBtn.Size = new Size(221, 40);
+            addTransferRequestBtn.TabIndex = 5;
+            addTransferRequestBtn.Text = "Add Transfer Request";
+            addTransferRequestBtn.UseVisualStyleBackColor = true;
+            addTransferRequestBtn.Click += AddTransferRequest_Click;
             // 
             // listView1
             // 
@@ -179,10 +179,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(listView1);
-            Controls.Add(button4);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(addTransferRequestBtn);
+            Controls.Add(logoutBtn);
+            Controls.Add(addReleaseRequestBtn);
+            Controls.Add(addSupplyRequestBtn);
             Controls.Add(welcomeLabel);
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -200,17 +200,17 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem warehouseToolStripItem;
         private ToolStripMenuItem toolStripMenuItem2;
-        private ToolStripMenuItem menuItem1SubItem1;
-        private ToolStripMenuItem menuItem1SubItem2;
-        private ToolStripMenuItem menuItem1SubItem3;
+        private ToolStripMenuItem warehouseSubItem1;
+        private ToolStripMenuItem warehouseSubItem2;
+        private ToolStripMenuItem warehouseSubItem3;
         private ToolStripMenuItem menuItem2SubItem1;
         private ToolStripMenuItem menuItem2SubItem2;
         private ToolStripMenuItem menuItem2SubItem3;
         private Label welcomeLabel;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private Button addSupplyRequestBtn;
+        private Button addReleaseRequestBtn;
+        private Button logoutBtn;
+        private Button addTransferRequestBtn;
         private ListView listView1;
     }
 }

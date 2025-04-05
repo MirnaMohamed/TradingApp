@@ -15,7 +15,7 @@ namespace TradingCompanyApp.Views
             Button submit = new Button();
             submit.Location = new Point(textBox4.Location.X, textBox4.Location.Y + 50);
             submit.Text = "Submit";
-            ApplicationDbContext context = ApplicationDbContext.context;
+            ApplicationDbContext context = new ApplicationDbContext();
             Warehouse warehouse = context.Warehouses.Find(id);
             if (isUpdateMode)
             {

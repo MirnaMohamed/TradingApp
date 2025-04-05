@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TradingCompanyApp.Models
 {
     [Table("Users")]
-    internal class User
+    public class User
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TradingCompanyApp.Models
 {
     [Table("Transfer_Request_Items")]
-    internal class TransferredItem
+    public class TransferredItem
     {
         [ForeignKey("TransferRequest")]
         public int RequestId { get; set; }
